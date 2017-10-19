@@ -33,11 +33,11 @@ def transaction_amounts(amount):
 	stripe_fee_amount = calculate_stripe_fee(amount + codesy_fee_amount)
 	
 	# this is the total to get charged to codesy's account
-	charge_amount = amount + codesy_fee_amount + (stripe_fee_amount * 0.5)
+	charge_amount = amount + codesy_fee_amount + (stripe_fee_amount / 2)
 	
 	# this the charge amount then subtract codesy fee and half of stripe fee, that should equal initial reward payment amount
 	# then subtract codesy fee and other half of stripe fee for users share
-	temp_payout = charge_amount - codesy_fee_amount - (stripe_fee_amount * 0.5) - codesy_fee_amount - (stripe_fee_amount * 0.5)
+	temp_payout = charge_amount - codesy_fee_amount - (stripe_fee_amount / 2) - codesy_fee_amount - (stripe_fee_amount / 2)
 	
 	#following comment is optimal temp_payout calculation
 	# temp_payout = charge_amount - (2 * codesy_fee_amount) - stripe_fee_amount
