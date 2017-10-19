@@ -26,38 +26,40 @@ def calculate_codesy_fee(amount):
 
 
 def calculate_stripe_fee(amount):
-     return round_penny((amount * stripe_pct) + stripe_transaction)
+    return round_penny((amount * stripe_pct) + stripe_transaction)
 
 
 def transaction_amounts(amount):
     codesy_fee_amount = calculate_codesy_fee(amount)
     total_stripe_fee = calculate_stripe_fee(amount + codesy_fee_amount)
-	
-    #Offer stripe fee portion
-    offer_stripe_fee = total_stripe_fee / 2;
+
+    # offer stripe fee portion
+    offer_stripe_fee = total_stripe_fee / 2
 
     # this is the total to get charged to codesy's account
     charge_amount = amount + codesy_fee_amount + offer_stripe_fee
 
-    #following comment is optimal temp_payout calculation
+    # payout amount before transfer fee
     temp_payout = charge_amount - (2 * codesy_fee_amount) - total_stripe_fee
 
-    #calculate the final payout first to determine transfer fee
+    # calculate the final payout first to determine transfer fee
     payout_amount = temp_payout / (1 + stripe_transfer_pct)
 
-    #transfer fee should equal the difference between temp_payout and final_payout
+    # transfer fee equals the difference between temp and payout_amount
     transfer_fee = temp_payout - payout_amount
 
     # all the fees together
     application_fee = 2 * codesy_fee_amount + total_stripe_fee + transfer_fee
+
+    payout_stripe_fee = offer_stripe_fee
 
     return {
           'amount': amount,
           'codesy_fee': codesy_fee_amount,
           'total_stripe_fee': total_stripe_fee,
           'charge_amount': charge_amount,
-          'offer_strip_fee': offer_stripe_fee,
-          'temp_payout': temp_payout,
+          'offer_stripe_fee': offer_stripe_fee,
+          'payout_stripe_fee': payout_stripe_fee,
           'payout_amount': payout_amount,
           'transfer_fee': transfer_fee,
           'application_fee': application_fee
