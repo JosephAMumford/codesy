@@ -32,8 +32,8 @@ def calculate_stripe_fee(amount):
 
 
 def calculate_stripe_transfer(amount):
-    return round_penny(amount 
-        - (amount / (1 + stripe_transfer_pct)
+    return round_penny(amount
+        - (amount / (1 + stripe_transfer_pct))
     )
 
 
